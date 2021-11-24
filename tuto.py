@@ -116,8 +116,8 @@ HAND_LINKS = [
 ]
 
 DATA_PATH = os.path.join('MP_Data')
-RESOLUTION_X = 640  # Screen resolution in pixel
-RESOLUTION_Y = 400
+RESOLUTION_Y = int(1920*9/10)  # Screen resolution in pixel
+RESOLUTION_X = int(1080*9/10)
 
 
 class Tuto:

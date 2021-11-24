@@ -2,7 +2,7 @@ import cv2
 import os
 import mediapipe as mp
 import numpy as np
-from projet_SLR_mirror.test import mediapipe_detection, draw_styled_landmarks, extract_keypoints
+from projet_SLR_mirror.test import mediapipe_detection, draw_styled_landmarks, extract_keypoints, IntelVideoReader
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 
@@ -14,6 +14,7 @@ class CustomImageDataset():
         self.nb_sequences = nb_sequences
         self.sequence_length = sequence_length
         self.DATA_PATH = DATA_PATH
+        self.cap = IntelVideoReader
         print('dataset init')
 
     def __len__(self):
@@ -29,7 +30,7 @@ class CustomImageDataset():
                 except:
                     pass
 
-        cap = cv2.VideoCapture(0)
+        
         # Set mediapipe model
         with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
 
@@ -41,7 +42,7 @@ class CustomImageDataset():
                     for frame_num in range(self.sequence_length):
 
                         # Read feed
-                        ret, frame = cap.read()
+                        frame,depth = self.cap.read()
 
                         # Make detections
                         image, results = mediapipe_detection(frame, holistic)
@@ -74,5 +75,5 @@ class CustomImageDataset():
                         if cv2.waitKey(10) & 0xFF == ord('q'):
                             break
 
-            cap.release()
+            self.cap.release()
             cv2.destroyAllWindows()

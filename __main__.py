@@ -37,7 +37,7 @@ class IntelVideoReader:
         # for dev in devices:
         #     dev.hardware_reset()
 
-        self.width = 640
+        self.width = 848
         self.height = 480
 
         config.enable_stream(
@@ -162,11 +162,11 @@ sequence_length = 30
 
 # dataset making : (à décommenter si vous voulez creer votre dataset)
 
-#actionsToAdd = ["hey"] #actions à refaire ou à ajouter
-#CustomImageDataset(actionsToAdd, nb_sequences, sequence_length, DATA_PATH).__getitem__()
+actionsToAdd = ["nothing"] #actions à refaire ou à ajouter
+CustomImageDataset(actionsToAdd, nb_sequences, sequence_length, DATA_PATH).__getitem__()
 
 # Actions that we try to detect
-actions = np.array(['hello', 'thanks', 'iloveyou', "what's up", "hey", "my", "name"])
+actions = np.array(["nothing", 'hello', 'thanks', 'iloveyou', "what's up", "hey", "my", "name"])
 
 # reprocess
 datas_train = Preprocess("train", actions, DATA_PATH, sequence_length)
@@ -179,7 +179,7 @@ train = False
 model = launch_LSTM(input_size,len(actions), train)
 
 cap = IntelVideoReader()
-for action in actions:
-    
-    Tuto(actions,action).launch_tuto()
-    launch_test(actions, model, action,cap)
+for action in actions:  
+    if (action != "nothing"):
+        Tuto(actions,action).launch_tuto()
+        launch_test(actions, model, action)
